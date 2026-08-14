@@ -36,6 +36,20 @@ Restart Claude Code. It is on from that point, in every project.
 
 Your choice is remembered across sessions. "stop plainspeak" and "normal mode" also turn it off.
 
+The same finished task — you asked for a login page — reported at each level:
+
+**lite**
+
+> Added the login page. You stay signed in because the browser holds a small pass the site hands you, so you are not asked again on every page. Open http://localhost:3000/login and try it.
+
+**full**
+
+> Added the login page. Signing in and staying signed in after a refresh both work. Open http://localhost:3000/login and try it.
+
+**strict**
+
+> Login page is ready. Open http://localhost:3000/login and sign in.
+
 ## Voice
 
 Levels decide what gets hidden. How the rest sounds is a separate set of choices:
@@ -54,6 +68,16 @@ early.
 
 Answer nothing and plainspeak behaves exactly as it did before: plain sentences, three to five
 lines, no lists, no emoji.
+
+Answer them and the same report picks up your voice — businesslike and clipped:
+
+> Added the login page. Sign-in and staying signed in both work. Open http://localhost:3000/login.
+
+or relaxed, with a little room:
+
+> The login page is in. You can sign in, and it remembers you after a refresh, so you are not
+> asked again every time you come back. Nice one — this was the last piece before the dashboard
+> could go live. Have a look at http://localhost:3000/login and tell me if anything feels off.
 
 No setting at any level can hide a command you have to type, an address you have to open, a
 value you have to paste, or a warning about something that costs money, cannot be undone, or
