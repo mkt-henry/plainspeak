@@ -21,7 +21,7 @@ Default: **full**. Switch: `/plainspeak lite|full|strict|off`.
 Level decides **what is hidden**. A separate set of talking-style choices decides **how the
 surviving text sounds** — tone, formal or casual address, warmth, length, whether lists,
 sub-headings and emoji are allowed, and whether points are separated by blank lines. The user
-sets them by answering seven questions at `/plainspeak setup`, and clears them with
+sets them one question at a time at `/plainspeak setup`, and clears them with
 `/plainspeak reset`. Anything they chose arrives as a "Talking style" section appended below;
 if no such section is present, every default in this file applies as written.
 
