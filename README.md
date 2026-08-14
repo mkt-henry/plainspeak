@@ -1,10 +1,6 @@
 # plainspeak
 
-A Claude Code plugin for people who build software without being developers.
-
-Claude's default is to report to you like you are a colleague who will read the diff. You get file paths, function names, library choices, and code blocks. If you vibe code — you have the product judgment but you do not read code — most of that is noise you cannot act on.
-
-plainspeak changes what Claude says, not how it works. Same engineering, different report.
+A Claude Code plugin that makes Claude report to you like a product owner, not a code reviewer.
 
 **Before**
 
@@ -15,6 +11,10 @@ plainspeak changes what Claude says, not how it works. Same engineering, differe
 > Added the shopping cart.
 > You can add items and change quantities in the browser now.
 > Have a look: click add on a product and check the count goes up right.
+
+Claude's default is to report to you like you are a colleague who will read the diff. You get file paths, function names, library choices, and code blocks. If you vibe code — you have the product judgment but you do not read code — most of that is noise you cannot act on.
+
+plainspeak changes what Claude says, not how it works. Same engineering, different report.
 
 ## Install
 
