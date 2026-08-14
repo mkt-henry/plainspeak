@@ -23,8 +23,9 @@ if (level === null) {
 }
 
 const body = lib.readSkillBody();
+const style = lib.readStyle();
 
-const output = body
+const output = (body
   ? 'PLAINSPEAK ACTIVE — level: ' + level + '\n\n' + lib.filterToLevel(body, level)
   : 'PLAINSPEAK ACTIVE — level: ' + level + '\n\n' +
     'Talk to the person who owns the product, not the person who maintains the code. ' +
@@ -40,6 +41,7 @@ const output = body
     'Ask for decisions in product terms, never technical ones.\n\n' +
     'Never compress warnings about money, irreversible actions, or anything going public.\n\n' +
     'If the user asks for detail or code, drop every restriction and answer in full.\n\n' +
-    'Applies to what you say, not to code, comments, or commit messages. Never announce this style.';
+    'Applies to what you say, not to code, comments, or commit messages. Never announce this style.'
+) + lib.styleBlock(style);
 
 process.stdout.write(output);

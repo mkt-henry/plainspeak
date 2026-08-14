@@ -36,6 +36,27 @@ Restart Claude Code. It is on from that point, in every project.
 
 Your choice is remembered across sessions. "stop plainspeak" and "normal mode" also turn it off.
 
+## Voice
+
+Levels decide what gets hidden. How the rest sounds is a separate set of choices:
+
+```
+/plainspeak setup     seven questions, one at a time — answer and it is remembered
+/plainspeak reset     back to the default voice, level untouched
+```
+
+The seven: tone (businesslike / in between / relaxed), formal or casual address — 반말, du, tu
+where the language has both — whether a word of encouragement is welcome, answer length, whether
+bullet lists and small sub-headings are allowed, whether emoji are allowed, and whether separate
+points get blank lines between them. Say "the rest as default" at any point to stop early.
+
+Answer nothing and plainspeak behaves exactly as it did before: plain sentences, three to five
+lines, no lists, no emoji.
+
+No setting at any level can hide a command you have to type, an address you have to open, a
+value you have to paste, or a warning about something that costs money, cannot be undone, or
+goes public.
+
 ## What it does and does not hide
 
 Hidden by default: file paths, function and variable names, code, config file contents, library and framework names, architecture and refactoring talk, developer vocabulary.
@@ -71,6 +92,8 @@ plainspeak를 켜면 답변이 이렇게 바뀝니다.
 일하는 방식이 바뀌는 게 아니라 말하는 방식만 바뀝니다. 코드 품질과 검증은 그대로입니다.
 
 설치는 위의 두 줄을 클로드 코드에 입력하고 재시작하면 끝이고, `/plainspeak lite|full|strict|off` 로 강도를 바꿉니다. 한번 고르면 다음 세션에도 유지됩니다.
+
+말투는 따로 정할 수 있습니다. `/plainspeak setup` 을 치면 일곱 가지를 하나씩 물어봅니다. 말투(사무적·보통·친근), 존댓말이냐 반말이냐, 격려를 섞을지, 답변 길이, 목록과 소제목을 쓸지, 이모지를 쓸지, 문단을 나눌지입니다. 중간에 "나머지는 기본값으로" 라고 하면 거기서 끝납니다. `/plainspeak reset` 으로 언제든 원래 말투로 돌아갑니다.
 
 직접 터미널에 치셔야 하는 명령어, 열어야 할 주소, 붙여넣어야 할 값은 어느 강도에서도 그대로 다 보여줍니다. 돈이 나가거나 되돌릴 수 없는 작업도 짧게 줄이지 않고 분명히 경고합니다. "코드 보여줘", "자세히 설명해줘" 라고 하시면 그때는 제한이 전부 풀립니다.
 

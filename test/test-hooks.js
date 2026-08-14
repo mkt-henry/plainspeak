@@ -57,8 +57,52 @@ assert.strictEqual(prompt('<scheduled-task id="1">do the thing</scheduled-task>'
 
 // An unknown level is reported without silently changing anything.
 out = slash('turbo');
-assert.match(out, /Unknown plainspeak level "turbo"/);
+assert.match(out, /Unknown plainspeak argument "turbo"/);
 assert.match(prompt('anything'), /PLAINSPEAK ACTIVE \(strict\)/);
+
+// Setup hands the model the interview plus the path to persist answers to.
+out = slash('setup');
+assert.match(out, /PLAINSPEAK SETUP/);
+assert.match(out, /ONE question at a time/);
+assert.match(out, /tone: formal \| neutral \| friendly/);
+assert.ok(out.includes(path.join(configDir, '.plainspeak-style')), 'must name the save path');
+
+// With no style file, nothing about style is injected anywhere.
+assert.doesNotMatch(activate(), /## Talking style/);
+assert.doesNotMatch(prompt('add a login page'), /Style:/);
+
+const stylePath = path.join(configDir, '.plainspeak-style');
+const writeStyle = value => fs.writeFileSync(stylePath, JSON.stringify(value), 'utf8');
+
+// Chosen values reach the full injection as rules, and the per-turn line as a short tag.
+writeStyle({ tone: 'friendly', address: 'casual', emoji: 'on' });
+out = activate();
+assert.match(out, /## Talking style \(chosen by this user\)/);
+assert.match(out, /relaxed and conversational/);
+assert.match(out, /반말/);
+assert.match(out, /One emoji per reply/);
+assert.doesNotMatch(out, /two or three lines/, 'untouched knobs must stay silent');
+assert.match(out, /never override the rules on money/, 'safety rules stay non-negotiable');
+
+out = prompt('add a login page');
+assert.match(out, /Style: tone=friendly, address=casual, emoji=on\./);
+assert.ok(out.length < 500, 'reinforcement must stay small, got ' + out.length);
+
+// Values equal to the default, unknown keys and junk values are all ignored.
+writeStyle({ tone: 'neutral', lists: 'maybe', bogus: 'x' });
+assert.doesNotMatch(activate(), /## Talking style/);
+fs.writeFileSync(stylePath, 'not json', 'utf8');
+assert.doesNotMatch(activate(), /## Talking style/);
+
+// Reset clears the style and leaves the level alone.
+writeStyle({ length: 'short' });
+assert.match(activate(), /Length: two or three lines/);
+out = slash('reset');
+assert.match(out, /PLAINSPEAK style reset/);
+assert.strictEqual(fs.existsSync(stylePath), false);
+out = activate();
+assert.match(out, /level: strict/, 'reset must not touch the level');
+assert.doesNotMatch(out, /## Talking style/);
 
 // Off stays off across sessions.
 assert.match(prompt('stop plainspeak'), /PLAINSPEAK OFF/);

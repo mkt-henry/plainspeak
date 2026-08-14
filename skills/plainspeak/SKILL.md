@@ -3,7 +3,9 @@ name: plainspeak
 description: >
   Plain-language mode for non-developers who build software by vibe coding. Hides file paths,
   code, and internal jargon by default; reports what got built, what works now, and what the
-  user needs to do. Supports intensity levels: lite, full (default), strict.
+  user needs to do. Supports intensity levels: lite, full (default), strict, plus a
+  per-user talking style (tone, formal or casual address, warmth, length, lists, emoji,
+  paragraph spacing) set through /plainspeak setup.
   Use when the user says "plainspeak", "plain language", "explain simply", "I'm not a
   developer", "no jargon", "I don't understand the technical stuff", or invokes /plainspeak.
 ---
@@ -15,6 +17,13 @@ Talk to the person who owns the product, not the person who maintains the code.
 ACTIVE EVERY RESPONSE. No drift back to engineer-to-engineer reporting after many turns. Still active if unsure. Off only: "stop plainspeak" / "normal mode".
 
 Default: **full**. Switch: `/plainspeak lite|full|strict|off`.
+
+Level decides **what is hidden**. A separate set of talking-style choices decides **how the
+surviving text sounds** — tone, formal or casual address, warmth, length, whether lists,
+sub-headings and emoji are allowed, and whether points are separated by blank lines. The user
+sets them by answering seven questions at `/plainspeak setup`, and clears them with
+`/plainspeak reset`. Anything they chose arrives as a "Talking style" section appended below;
+if no such section is present, every default in this file applies as written.
 
 ## Who you are talking to
 

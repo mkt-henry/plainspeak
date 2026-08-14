@@ -51,9 +51,11 @@ function handle(raw) {
   if (command) {
     const requested = (command[1] || lib.DEFAULT_LEVEL).toLowerCase();
     if (requested === 'off') return turnOff();
+    if (requested === 'setup') return setup();
+    if (requested === 'reset') return resetStyle();
     if (lib.LEVELS.includes(requested)) return turnOn(requested);
-    return 'Unknown plainspeak level "' + requested + '". Valid: ' +
-      lib.LEVELS.join(', ') + ', off. Tell the user, and leave the current level unchanged.';
+    return 'Unknown plainspeak argument "' + requested + '". Valid: ' +
+      lib.LEVELS.join(', ') + ', off, setup, reset. Tell the user, and leave everything unchanged.';
   }
 
   if (allowNaturalLanguage) {
@@ -63,16 +65,64 @@ function handle(raw) {
 
   const level = lib.readLevel();
   if (!level) return '';
-  return REINFORCE.replace('%LEVEL%', level);
+  return REINFORCE.replace('%LEVEL%', level) + lib.styleSuffix(lib.readStyle());
 }
 
 function turnOn(level) {
   try { fs.unlinkSync(offMarker); } catch (e) {}
   lib.writeLevel(level);
+  const style = lib.readStyle();
   const body = lib.readSkillBody();
   return body
-    ? 'PLAINSPEAK ACTIVE — level: ' + level + '\n\n' + lib.filterToLevel(body, level)
-    : REINFORCE.replace('%LEVEL%', level);
+    ? 'PLAINSPEAK ACTIVE — level: ' + level + '\n\n' + lib.filterToLevel(body, level) +
+      lib.styleBlock(style)
+    : REINFORCE.replace('%LEVEL%', level) + lib.styleSuffix(style);
+}
+
+// The interview itself is the model's job — it has to be conversational and in the
+// user's language. The hook only supplies the questions, the vocabulary and where
+// to persist the answers.
+function setup() {
+  const options = Object.keys(lib.STYLE)
+    .map(key => '  ' + key + ': ' + lib.STYLE[key].values.join(' | ') +
+      '   (default: ' + lib.STYLE[key].default + ')')
+    .join('\n');
+
+  return [
+    'PLAINSPEAK SETUP — run this now, before anything else in this turn.',
+    '',
+    'Interview the user about how they want you to talk. Ask ONE question at a time, in',
+    'their language, in plain product words — never show these keys or values to them.',
+    'Open by telling them there are seven quick questions and that they can say "the rest',
+    'as default" at any point to stop early.',
+    '',
+    '1. tone — businesslike, in between, or relaxed and friendly?',
+    '2. address — formal speech, or casual (반말 / du / tu) where the language has both?',
+    '3. warmth — just the facts, or a word of encouragement when it fits?',
+    '4. length — two or three lines, the usual few, or room for up to about ten?',
+    '5. lists — plain sentences only, or bullet lists and small sub-headings when there are several items?',
+    '6. emoji — never, or one now and then?',
+    '7. paragraphs — one block of text, or blank lines between separate points?',
+    '',
+    'Allowed values:',
+    options,
+    '',
+    'When the interview ends, write the answers as a JSON object to this exact path,',
+    'creating or overwriting the file:',
+    '  ' + lib.stylePath,
+    'Include only the keys they moved off the default; omit the rest. Example:',
+    '  {"tone":"friendly","address":"casual","emoji":"on"}',
+    '',
+    'Then confirm in one or two short sentences how you will sound from now on, written',
+    'in the new style so they can hear it. Never show the path, the file, the JSON, or',
+    'the option names. Apply the new style from that same reply onward.',
+  ].join('\n');
+}
+
+function resetStyle() {
+  lib.clearStyle();
+  return 'PLAINSPEAK style reset — every talking-style choice is back to default. The level ' +
+    'is unchanged. Tell the user in one short sentence, and drop back to the default voice now.';
 }
 
 function turnOff() {
