@@ -43,6 +43,13 @@ assert.doesNotMatch(out, /^\| \*\*lite\*\* \|/m);
 // The level persists into the next session rather than resetting.
 assert.match(activate(), /level: strict/);
 
+// The argument hint copied verbatim still resolves to a real level.
+assert.match(slash('[lite]'), /PLAINSPEAK ACTIVE — level: lite/);
+
+// A bare level word switches too, since the command asks for exactly that word.
+assert.match(prompt('strict'), /PLAINSPEAK ACTIVE — level: strict/);
+assert.match(prompt('anything'), /PLAINSPEAK ACTIVE \(strict\)/);
+
 // An ordinary prompt gets the cheap per-turn reinforcement, not the full body.
 out = prompt('add a login page');
 assert.match(out, /PLAINSPEAK ACTIVE \(strict\)/);
@@ -108,6 +115,9 @@ assert.doesNotMatch(out, /## Talking style/);
 assert.match(prompt('stop plainspeak'), /PLAINSPEAK OFF/);
 assert.strictEqual(prompt('add a login page'), '');
 assert.strictEqual(activate(), 'OK');
+
+// While off, a bare level word is just an ordinary prompt.
+assert.strictEqual(prompt('strict'), '');
 
 // And turning it back on clears the off state.
 assert.match(slash('lite'), /level: lite/);

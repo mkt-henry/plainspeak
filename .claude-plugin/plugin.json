@@ -1,7 +1,7 @@
 {
   "name": "plainspeak",
   "description": "Plain-language mode for non-developers who build software by vibe coding. Hides paths, code and jargon; reports what works and what to do next. Tone, length and formatting are configurable.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "Henry",
     "url": "https://github.com/mkt-henry"

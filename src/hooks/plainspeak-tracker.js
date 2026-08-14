@@ -49,7 +49,7 @@ function handle(raw) {
 
   const command = /^\/(?:plainspeak:)?plainspeak(?:\s+(\S+))?$/.exec(prompt);
   if (command) {
-    const requested = (command[1] || lib.DEFAULT_LEVEL).toLowerCase();
+    const requested = strip(command[1]) || lib.DEFAULT_LEVEL;
     if (requested === 'off') return turnOff();
     if (requested === 'setup') return setup();
     if (requested === 'reset') return resetStyle();
@@ -58,14 +58,27 @@ function handle(raw) {
       lib.LEVELS.join(', ') + ', off, setup, reset. Tell the user, and leave everything unchanged.';
   }
 
+  const level = lib.readLevel();
+
   if (allowNaturalLanguage) {
     if (/\b(stop plainspeak|normal mode|plainspeak off)\b/.test(prompt)) return turnOff();
     if (/\b(plainspeak on|start plainspeak)\b/.test(prompt)) return turnOn(lib.DEFAULT_LEVEL);
+    // A bare level word answers the question the command itself asks ("which
+    // level?"), so honour it — but only while plainspeak is already running,
+    // or "off" in an unrelated conversation would switch it on to switch it off.
+    const bare = level && strip(prompt);
+    if (bare === 'off') return turnOff();
+    if (bare && lib.LEVELS.includes(bare)) return turnOn(bare);
   }
 
-  const level = lib.readLevel();
   if (!level) return '';
   return REINFORCE.replace('%LEVEL%', level) + lib.styleSuffix(lib.readStyle());
+}
+
+// Peel off decoration around the level word: users copy the argument hint
+// verbatim ("/plainspeak [strict]"), or quote, backtick or punctuate it.
+function strip(value) {
+  return (value || '').replace(/^[^a-z]+/, '').replace(/[^a-z]+$/, '');
 }
 
 function turnOn(level) {
