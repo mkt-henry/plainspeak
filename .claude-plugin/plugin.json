@@ -1,0 +1,35 @@
+{
+  "name": "plainspeak",
+  "description": "Plain-language mode for non-developers who build software by vibe coding. Hides paths, code and jargon; reports what works and what to do next.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Henry",
+    "url": "https://github.com/mkt-henry"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/plainspeak-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading plainspeak..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/plainspeak-tracker.js\"",
+            "timeout": 5,
+            "statusMessage": "Keeping plainspeak active..."
+          }
+        ]
+      }
+    ]
+  }
+}

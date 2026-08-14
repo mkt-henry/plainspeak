@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "plainspeak",
+  "description": "Plain-language mode for Claude Code. Built for non-developers who ship real products by vibe coding.",
+  "owner": {
+    "name": "Henry",
+    "url": "https://github.com/mkt-henry"
+  },
+  "plugins": [
+    {
+      "name": "plainspeak",
+      "description": "Answers in plain language. Hides paths, code and jargon; shows what works now and what you need to do.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
